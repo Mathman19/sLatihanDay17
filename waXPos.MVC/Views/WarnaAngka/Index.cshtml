@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Shape";
+}
+
+@section Styles {
+    <style type="text/css">
+        .green {
+            background-color: #afff49;
+            font-weight: bold;
+            text-align:center;
+        }
+
+        .yellow {
+            background-color: #f3fa5d;
+            font-weight: bold;
+            text-align:center;
+        }
+
+        .blue {
+            background-color: #3ca9f1;
+            font-weight: bold;
+            text-align:center;
+        }
+        
+        .orange {
+            background-color: #f7881d;
+            font-weight: bold;
+            text-align:center;
+        }
+    </style>
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <td colspan="2">
+            <input type="number" id="nil1" class="form-control" value="0" />
+        </td>
+        <td colspan="2" id="shape">
+            @*<input type="text" id="shape" class="form-control" value="?" />*@
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" id="btn-green" class="btn btn-success" value="Green" />
+        </td>
+        <td>
+            <input type="button" id="btn-yellow" class="btn btn-warning" value="Yellow" />
+        </td>
+        <td>
+            <input type="button" id="btn-blue" class="btn btn-primary" value="Blue" />
+        </td>
+        <td>
+            <input type="button" id="btn-orange" class="btn" style="background-color:#f7881d; color:white" value="Orange" />
+        </td>
+    </tr>
+
+</table>
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#btn-green").click(function () {
+            $.ajax({
+                url: '@Url.Action("Green", "WarnaAngka")',
+                type: 'get',
+                data: { val: $("#nil1").val()},
+                success: function (result) {
+                    $("#shape").html(result);
+                }
+            });
+        });
+        $("#btn-yellow").click(function () {
+            $.ajax({
+                url: '@Url.Action("Yellow", "WarnaAngka")',
+                type: 'get',
+                data: { val: $("#nil1").val() },
+                success: function (result) {
+                    $("#shape").html(result);
+                }
+            });
+        });
+        $("#btn-blue").click(function () {
+            $.ajax({
+                url: '@Url.Action("Blue", "WarnaAngka")',
+                type: 'get',
+                data: { val: $("#nil1").val() },
+                success: function (result) {
+                    $("#shape").html(result);
+                }
+            });
+        });
+        $("#btn-orange").click(function () {
+            $.ajax({
+                url: '@Url.Action("Orange", "WarnaAngka")',
+                type: 'get',
+                data: { val: $("#nil1").val() },
+                success: function (result) {
+                    $("#shape").html(result);
+                }
+            });
+        });
+    </script>
+}

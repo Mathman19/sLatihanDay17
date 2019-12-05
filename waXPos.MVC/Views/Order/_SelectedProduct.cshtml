@@ -1,0 +1,22 @@
+﻿@model XPos.ViewModel.OrderDetailViewModel
+    <tr>
+        <td>
+            @Html.HiddenFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </td>
+        <td>
+            @*@Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @type="number" } })*@
+            <input class="form-control text-box single-line" data-val-number="The field Quantity must be a number." data-val-required="The Quantity field is required." id="Quantity" name="Quantity" type="number" onchange="Clc(this)" onkeyup="Clc(this)" value="1">
+        </td>
+        <td>
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btn-remove" title="Remove" onclick="Remove(this)">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+        </td>
+</tr>

@@ -1,0 +1,5 @@
+C:\batch215\day17\sLatihanDay17\XPos.ViewModel\bin\Debug\XPos.ViewModel.dll
+C:\batch215\day17\sLatihanDay17\XPos.ViewModel\bin\Debug\XPos.ViewModel.pdb
+C:\batch215\day17\sLatihanDay17\XPos.ViewModel\obj\Debug\XPos.ViewModel.csprojResolveAssemblyReference.cache
+C:\batch215\day17\sLatihanDay17\XPos.ViewModel\obj\Debug\XPos.ViewModel.dll
+C:\batch215\day17\sLatihanDay17\XPos.ViewModel\obj\Debug\XPos.ViewModel.pdb

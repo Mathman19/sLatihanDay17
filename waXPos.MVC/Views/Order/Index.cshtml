@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "P.O.S";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <input type="button" id="btn-new-order" value="New Order" class="btn btn-default" />
+        <input type="button" id="btn-payment" value="Payment" class="btn btn-default" />
+        <input type="button" id="btn-new-trans" value="New Trans" class="btn btn-default" />
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered" id="order-table">
+            <thead>
+                <tr>
+                    <th style="width:40%">Product Name</th>
+                    <th style="width:20%">Price</th>
+                    <th style="width:20%">Quantity</th>
+                    <th style="width:20%">Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @*Order list disini*@
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2">
+                        Total
+                    </th>
+                    <th>
+                        <input type="number" id="tot-qty" value="0" name="tot-qty" class="form-control" readonly="readonly"/>
+                    </th>
+                    <th>
+                        <input type="number" id="tot-amount" value="0" name="tot-amount" class="form-control" readonly="readonly"/>
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </tfoot>
+        </table> 
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $('#btn-new-order').click(function () {
+            $.ajax({
+                url: '@Url.Action("ProductList", "Product")',
+                type: 'get',
+                success: function (result) {
+                $('.modal-body').html(result);
+                $('.modal-title').html("Select New Order");
+                $('.modal').modal("show");
+             }
+        });
+        });
+        function Remove(obj) {
+            var tr = $(obj).closest('tr');
+            var qty = tr.find('input[name=Quantity]').val();
+            if (qty<=0) {
+                tr.remove();
+            }
+            else {
+                var check = confirm("Apakah anda yakin?")
+                if (check == true) {
+                    tr.remove();
+                } 
+            }
+            Total();
+        }
+
+        function Clc(obj) {
+            var tr = $(obj).closest('tr');
+            var price = tr.find('input[name=Price]').val();
+            var qty = tr.find('input[name=Quantity]').val();
+            var amount = parseInt(price) * parseInt(qty);
+            tr.find('input[name=Amount]').val(amount);
+            Total()
+        }
+
+        function Total() {
+            var qty = 0;
+            var amount = 0;
+            $('#order-table tbody').find('tr').each(function () {
+                qty += parseInt($(this).find('input[name=Quantity]').val());
+                amount += parseInt($(this).find('input[name=Amount]').val());
+            })
+            $('#tot-qty').val(qty);
+            $('#tot-amount').val(amount);
+        }
+
+        var data = {};
+
+        $('#btn-payment').click(function () {
+
+            details = [];
+            $('#order-table tbody').find('tr').each(function () {
+                var prodId = $(this).find('input[name=ProductId]').val();
+                var prodName = $(this).find('input[name=ProductName]').val();
+                var qty = $(this).find('input[name=Quantity]').val();
+                var price = $(this).find('input[name=Price]').val();
+                var amount = $(this).find('input[name=Amount]').val();
+                detail = {
+                    ProductId: prodId,
+                    ProductName: prodName,
+                    Quantity: qty,
+                    Price: price,
+                    Amount: amount
+                };
+                details.push(detail);
+            });
+
+            // Menampilkan data details
+            //console.log(details);
+
+            data = { 
+                Quantity : $('#tot-qty').val(),
+                Amount : $('#tot-amount').val(),
+                Details: details,
+                Tax: ($('#tot-amount').val() * (10/100))
+            }
+
+            $.ajax({
+                url: '@Url.Action("Payment", "Order")',
+                type: 'post',
+                data: { model: data },
+                success: function (result) {
+                    $('.modal-body').html(result);
+                    $('.modal-title').html("Payment");
+                    $('.modal').modal("show");
+                    CalcPayment();
+                }
+            });
+        });
+
+        $('#btn-new-trans').attr("onclick", "location.reload()");
+    </script>
+}

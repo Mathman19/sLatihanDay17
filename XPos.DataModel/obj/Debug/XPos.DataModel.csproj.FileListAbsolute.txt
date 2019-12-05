@@ -1,0 +1,10 @@
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\bin\Debug\XPos.DataModel.dll.config
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\bin\Debug\XPos.DataModel.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\bin\Debug\XPos.DataModel.pdb
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\bin\Debug\EntityFramework.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\bin\Debug\EntityFramework.SqlServer.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\bin\Debug\EntityFramework.xml
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\bin\Debug\EntityFramework.SqlServer.xml
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\obj\Debug\XPos.DataModel.csprojResolveAssemblyReference.cache
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\obj\Debug\XPos.DataModel.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataModel\obj\Debug\XPos.DataModel.pdb

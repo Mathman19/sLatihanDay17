@@ -1,0 +1,82 @@
+﻿@model IEnumerable<XPos.ViewModel.ProductViewModel>
+
+        <div>
+            <div>
+                <label class="control-label col-md-2" for="Search">Search</label>
+            </div>
+            <div class="form-inline col-xs-15" >
+                <input class="form-control text-box" id="form-search" name="Search" type="text" >
+                <button type="button" class="btn btn-success btn-search" title="Search">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+<table class="table" id="list-table">
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Initial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)/<br />
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                <button type="button" class="btn btn-success btn-select" data-dismiss="modal" data-id="@item.Id" title="Select">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                </button>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Initial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)<br />
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('table .btn-select').click(function () {
+        $.ajax({
+            url: '@Url.Action("SelectedProduct", "Order")',
+            type: 'get',
+            data: { id: $(this).attr('data-id')},
+            success: function (result) {
+                $('#order-table tbody').append(result);
+                Total();
+            }
+        });
+    });
+
+    $('.btn-search').click(function () {
+        $.ajax({
+            url: '/Product/ProductList',
+            type: 'get',
+            data: { search: $('#form-search').val() },
+            success: function (result) {
+                $('.modal-body').html(result);
+            }
+        });
+    });
+</script>

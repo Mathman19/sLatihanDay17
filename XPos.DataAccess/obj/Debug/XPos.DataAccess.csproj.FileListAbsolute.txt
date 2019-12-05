@@ -1,0 +1,14 @@
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\XPos.DataAccess.dll.config
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\XPos.DataAccess.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\XPos.DataAccess.pdb
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\EntityFramework.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\XPos.DataModel.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\XPos.ViewModel.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\XPos.DataModel.pdb
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\XPos.ViewModel.pdb
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\EntityFramework.xml
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\obj\Debug\XPos.DataAccess.csprojResolveAssemblyReference.cache
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\obj\Debug\XPos.DataAccess.dll
+C:\batch215\day17\sLatihanDay17\XPos.DataAccess\obj\Debug\XPos.DataAccess.pdb

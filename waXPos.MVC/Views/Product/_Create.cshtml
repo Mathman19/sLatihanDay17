@@ -1,0 +1,175 @@
+﻿@model XPos.ViewModel.ProductViewModel
+
+
+@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { id = "form-create", name = "form-create", enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CategoryId, (IEnumerable<SelectListItem>)ViewBag.CategoryList, "Select Category", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.VariantId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.VariantId, (IEnumerable<SelectListItem>)ViewBag.VariantList, "Select Category", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.VariantId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.VariantName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.VariantName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.VariantName, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Initial, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Initial, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Initial, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Stock, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Stock, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Active)
+                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    <img id="up-image" src="#" alt="image" />
+                    <input type="file" name="File" id="File" accept="image/png, image/jpeg, image/jpg" onchange="ShowImage(this)" /><br><br>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @*data-dissmiss -> data-dismiss*@
+                <input type="button" value="Cancel" data-dismiss="modal" class="btn btn-default" />
+                <input type="submit" value="Create New" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    $("#CategoryId").change(function () {
+        $.ajax({
+            url: '@Url.Action("ListByCategory", "Variant")',
+            type: 'get',
+            data: {id: $(this).val()},
+            success: function (result) {
+                $('#VariantId').html(result);
+            }
+        });
+        @*$.ajax({
+            url: '@Url.Action("ListByCategoryJson", "Variant")',
+            type: 'get',
+            data: {id: $(this).val()},
+            success: function (result) {
+                var option = "<option value=''>Select Option</option>";
+                result.hasil.forEach(function (data,idx) {
+                    option += "<option>" + data.Name + "</option>";
+                })
+                $('#VariantId').html(option);
+            }
+        });*@
+    });
+
+    $("#form-create").submit(function () {
+        var dataForm = new FormData($("#form-create")[0]);
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: dataForm,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result.success) {
+                    var entity = result.entity;
+                    alert('Save successfull.\nInitial: ' + entity.Initial + '\nName: ' + entity.Name);
+                    $(".modal").modal("hide");
+                    GetList();
+                } else {
+                    alert('Error.\nMessage: ' + result.message)
+                }
+            }
+        });
+        return false;
+    });
+
+    function ShowImage(obj) {
+        if (obj.files && obj.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#up-image')
+                .attr('src', e.target.result)
+                .width(300);
+            };
+            console.log(obj.files);
+
+            reader.readAsDataURL(obj.files[0]);
+        };
+    }
+</script>

@@ -1,0 +1,158 @@
+﻿@model XPos.ViewModel.OrderHeaderViewModel
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Reference, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
+                @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Tax">Tax</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Tax" name="Tax" type="number" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Total">Total</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Total" name="Total" type="number" readonly="readonly" >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Payment">Payment</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Payment" name="Payment" type="number" value="0,00"  onkeyup="CalcPayment()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Change">Change</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" id="Change" name="Change" type="number" value="0,00" readonly="readonly">
+            </div>
+        </div>
+
+        @*List dengan javascript*@
+        @*<table class="table table-striped" >
+            <thead>
+                <tr>
+                    <th>Prod Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="pay-order-list">
+            </tbody>
+        </table>*@
+
+        @*List dengan model / view*@
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Prod Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Details)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Price</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Amount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Cancel" data-dismiss="modal" class="btn btn-default btn-cancel" />
+                <input type="button" id="btn-pay" value="Pay" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //console.log(data.Details);
+        data.Details.forEach(function (detail, idx) {
+            var tr = "<tr>";
+            tr += "<td>" + detail.ProductName + "</td>";
+            tr += "<td>" + detail.Price + "</td>";
+            tr += "<td>" + detail.Quantity + "</td>";
+            tr += "<td>" + detail.Amount + "</td>";
+            tr += "</tr>";
+            $('#pay-order-list').append(tr);
+        });
+    });
+
+    function CalcPayment() {
+        var payment = $('#Payment').val();
+        var amount = data.Amount;
+        var tax = data.Tax;
+        $('#Tax').val(tax);
+        $('#Total').val(parseInt(tax) + parseInt(amount));
+        var totalAmount = parseInt(amount) + parseInt(tax);
+        var change = parseInt(payment) - parseInt(totalAmount);
+        $('#Change').val(change);
+    }
+
+    $('#btn-pay').click(function () {
+        $.ajax({
+            url: '@Url.Action("Pay", "Order")',
+            type: 'post',
+            data: { model: data },
+            success: function (result) {
+                if (result.success) {
+                    $('.modal-title').html("Payment SinQ/CosQ");
+                    $('#Reference').val(result.reference);
+                    $('#Payment').attr("readonly", "readonly");
+                    $('#btn-pay').remove();
+                    $('.btn-cancel').val("Close!");
+                    $('.btn-cancel').attr("onclick", "location.reload()");
+                } else {
+                    alert('Some error has been occured, see detail below\nError detail: ' + result.message);
+                }
+            }
+        });
+    });
+
+</script>
